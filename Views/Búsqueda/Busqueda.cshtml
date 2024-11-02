@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Proyecto_1.Models.Ruta>
+
+@{
+    ViewData["Title"] = "Resultados de Búsqueda";
+}
+
+<h1>Resultados de Búsqueda</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Fecha</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ruta in Model)
+        {
+            <tr>
+                <td>@ruta.Origen</td>
+                <td>@ruta.Destino</td>
+                <td>@ruta.Horario.ToShortDateString()</td>
+                <td>@ruta.Precio</td>
+                <td>
+                    <a asp-action="Detalles" asp-route-id="@ruta.Id">Seleccionar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,21 @@
+﻿@model Proyecto_1.Models.Ruta
+
+@{
+    ViewData["Title"] = "Detalles de Ruta";
+}
+
+<h1>Detalles de Ruta</h1>
+
+<h2>@Model.Origen a @Model.Destino</h2>
+<p>Fecha: @Model.Horario.ToShortDateString()</p>
+<p>Precio: @Model.Precio.ToString("C")</p>
+<p>Asientos Disponibles: @Model.AsientosDisponibles</p>
+@* <p>Descripción: @Model.Descripcion</p> <!-- Agrega más detalles según sea necesario --> *@
+
+<div>
+    <h3>Selecciona tus asientos</h3>
+    <form method="get" asp-controller="Reserva" asp-action="Index">
+        <input type="hidden" name="rutaId" value="@Model.Id" />
+        <button type="submit">Seleccionar Asientos</button>
+    </form>
+</div>

@@ -1,0 +1,36 @@
+﻿@model Proyecto_1.Models.Ruta
+
+@{
+    ViewData["Title"] = "Seleccionar Asientos";
+}
+
+<h1>Seleccionar Asientos</h1>
+
+<h2>@Model.Origen a @Model.Destino</h2>
+<p>Fecha: @Model.Horario.ToShortDateString()</p>
+<p>Precio: @Model.Precio.ToString("C")</p>
+
+<form method="post" asp-controller="Reserva" asp-action="Book">
+    <input type="hidden" name="rutaId" value="@Model.Id" />
+    <h3>Asientos Disponibles:</h3>
+
+    @if (Model.AsientosDisponibles > 0)
+    {
+        for (int i = 1; i <= Model.AsientosDisponibles; i++)
+        {
+            <div>
+                <label>
+                    <input type="checkbox" name="asientos" value="@i" />
+                    Asiento @i
+                </label>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No hay asientos disponibles para esta ruta.</p>
+    }
+
+    <button type="submit">Reservar Asientos Seleccionados</button>
+</form>
+
