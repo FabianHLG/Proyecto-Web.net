@@ -1,0 +1,23 @@
+﻿@model Proyecto_1.Models.Usuario
+
+@{
+    ViewData["Title"] = "Perfil de Usuario";
+}
+
+<h1>Editar Perfil</h1>
+
+<form asp-controller="Usuario" asp-action="EditPerfil" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <div>
+        <label>Nombre</label>
+        <input type="text" name="Nombre" value="@Model.Nombre" required />
+    </div>
+    <div>
+        <label>Email</label>
+        <input type="email" name="Email" value="@Model.Email" required />
+    </div>
+    <div>
+        <button type="submit">Actualizar</button>
+    </div>
+</form>
+

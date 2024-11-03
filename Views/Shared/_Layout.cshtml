@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,18 +20,21 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Routes" asp-action="Index">Buscar Rutas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="Index">Mis Reservas</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Búsqueda" asp-action="Index">Inicio</a>
                         </li>
                     </ul>
                     <div class="d-flex">
-                        <a class="btn btn-outline-primary me-2" asp-area="" asp-controller="Account" asp-action="Register">Registrar</a>
-                        <a class="btn btn-outline-success" asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
+                        @if (Context.Session.GetString("UserId") != null) // Verifica si hay un usuario autenticado
+                        {
+                            var nombreUsuario = Context.Session.GetString("UserNombre"); // Supongamos que también guardas el nombre
+                            <span class="navbar-text me-2">Hola, @nombreUsuario</span>
+                            <a class="btn btn-outline-secondary" asp-area="" asp-controller="Usuario" asp-action="Perfil">Perfil</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-primary me-2" asp-area="" asp-controller="Usuario" asp-action="Registro">Registrar</a>
+                            <a class="btn btn-outline-success" asp-area="" asp-controller="Usuario" asp-action="Login">Iniciar Sesión</a>
+                        }
                     </div>
                 </div>
             </div>
@@ -52,5 +56,6 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
 
 

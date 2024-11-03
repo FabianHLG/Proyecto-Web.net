@@ -1,0 +1,47 @@
+﻿@model Proyecto_1.Models.Usuario
+
+@{
+    ViewData["Title"] = "Registro de Usuario";
+}
+
+<h1>Registro de Usuario</h1>
+
+<form asp-controller="Usuario" asp-action="Registro" method="post">
+    <div>
+        <label>Nombre</label>
+        <input type="text" asp-for="Nombre" required />
+    </div>
+    
+    <div>
+        <label>Email</label>
+        <input type="email" asp-for="Email" required />
+    </div>
+    
+    <div>
+        <label>Contraseña</label>
+        <input type="password" asp-for="Contraseña" required />
+    </div>
+    
+    <div>
+        <label>Fecha de Nacimiento</label>
+        <input type="date" asp-for="FechaNacimiento" required />
+    </div>
+    
+    <div>
+        <label>Dirección Exacta</label>
+        <input type="text" asp-for="DireccionExacta" required />
+    </div>
+    
+    <div>
+        <label>Teléfono</label>
+        <input type="tel" asp-for="Telefono" required />
+    </div>
+    
+    <input type="hidden" asp-for="FechaRegistro" value="@DateTime.Now" />
+    
+    <div>
+        <button type="submit">Registrar</button>
+    </div>
+</form>
+
+
