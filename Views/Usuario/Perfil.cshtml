@@ -7,17 +7,35 @@
 <h1>Editar Perfil</h1>
 
 <form asp-controller="Usuario" asp-action="EditPerfil" method="post">
-    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="hidden" asp-for="Id" />
+
     <div>
         <label>Nombre</label>
-        <input type="text" name="Nombre" value="@Model.Nombre" required />
+        <input asp-for="Nombre" class="form-control" required />
     </div>
+
     <div>
         <label>Email</label>
-        <input type="email" name="Email" value="@Model.Email" required />
+        <input asp-for="Email" type="email" class="form-control" required />
     </div>
+
     <div>
-        <button type="submit">Actualizar</button>
+        <label>Dirección Exacta</label>
+        <input asp-for="DireccionExacta" class="form-control" required />
+    </div>
+
+    <div>
+        <label>Teléfono</label>
+        <input asp-for="Telefono" class="form-control" required />
+    </div>
+
+    <div>
+        <label>Fecha de Nacimiento</label>
+        <input asp-for="FechaNacimiento" type="date" class="form-control" required />
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
     </div>
 </form>
 

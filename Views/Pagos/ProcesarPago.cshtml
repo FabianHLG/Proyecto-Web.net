@@ -1,0 +1,32 @@
+﻿@model Proyecto_1.Models.Reserva
+
+@{
+    ViewData["Title"] = "Proceso de Pago";
+}
+
+<div class="card">
+    <h1>Proceso de Pago</h1>
+    <div class="card-body">
+        <p><strong>Origen:</strong> @Model.Ruta.Origen</p>
+        <p><strong>Destino:</strong> @Model.Ruta.Destino</p>
+        <p><strong>Fecha:</strong> @Model.Ruta.Horario.ToShortDateString()</p>
+        <p><strong>Asientos:</strong> @Model.AsientoSeleccionado</p>
+        <p><strong>Precio Total:</strong> @Model.PrecioTotal.ToString("C")</p>
+    </div>
+</div>
+
+<form method="post" asp-action="ConfirmarPago">
+    <input type="hidden" name="reservaId" value="@Model.Id" />
+
+    <div>
+        <label>Método de Pago:</label>
+        <select name="metodoPago" required>
+            <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+            <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+            <option value="PayPal">PayPal</option>
+        </select>
+    </div>
+
+    <button type="submit">Pagar</button>
+</form>
+

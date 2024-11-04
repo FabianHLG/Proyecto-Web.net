@@ -1,0 +1,23 @@
+﻿@model Proyecto_1.Models.Reserva
+
+@{
+    ViewData["Title"] = "Confirmación de Pago";
+}
+
+<h1>Confirmación de Pago</h1>
+@if (Context.Session.GetString("UserId") != null) // Verifica si hay un usuario autenticado
+{
+    var nombreUsuario = Context.Session.GetString("UserNombre");
+    <p>Gracias por su compra, @nombreUsuario. Su pago ha sido procesado con éxito.</p>
+}
+<p>Detalles de la Reserva:</p>
+<ul>
+    <li>Origen: @Model.Ruta.Origen</li>
+    <li>Destino: @Model.Ruta.Destino</li>
+    <li>Fecha: @Model.Ruta.Horario.ToShortDateString()</li>
+    <li>Asientos: @Model.AsientoSeleccionado</li>
+    <li>Precio Total: @Model.PrecioTotal.ToString("C")</li>
+</ul>
+
+<a asp-area="" asp-controller="Búsqueda" asp-action="Index" class="btn btn-primary">Volver al Inicio</a>
+

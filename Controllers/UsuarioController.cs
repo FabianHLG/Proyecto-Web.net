@@ -93,28 +93,26 @@ namespace Proyecto_1.Controllers
         [HttpPost]
         public IActionResult EditPerfil(Usuario updatedUser)
         {
-            if (ModelState.IsValid)
+
+            // Encuentra al usuario en la base de datos
+            var user = _appDbContext.Usuario.Find(updatedUser.Id);
+
+            if (user != null)
             {
-                // Encuentra al usuario en la base de datos
-                var user = _appDbContext.Usuario.SingleOrDefault(u => u.Id == updatedUser.Id);
+                // Actualiza las propiedades del usuario con los nuevos valores
+                user.Nombre = updatedUser.Nombre;
+                user.Email = updatedUser.Email;
+                user.DireccionExacta = updatedUser.DireccionExacta;
+                user.Telefono = updatedUser.Telefono;
+                user.FechaNacimiento = updatedUser.FechaNacimiento;
 
-                if (user != null)
-                {
-                    // Actualiza las propiedades del usuario con los nuevos valores
-                    user.Nombre = updatedUser.Nombre;
-                    user.Email = updatedUser.Email;
+                // Guarda los cambios en la base de datos
+                _appDbContext.SaveChanges();
 
-                    // Marca el usuario como actualizado
-                    _appDbContext.Usuario.Update(user);
+                // Actualiza el nombre del usuario en la sesión
+                HttpContext.Session.SetString("UserNombre", user.Nombre);
 
-                    // Guarda los cambios en la base de datos
-                    _appDbContext.SaveChanges();
-
-                    // Actualiza el nombre del usuario en la sesión
-                    HttpContext.Session.SetString("UserNombre", user.Nombre);
-
-                    return RedirectToAction("Perfil");
-                }
+                return RedirectToAction("Perfil");
             }
             return View("Perfil", updatedUser);
         }
