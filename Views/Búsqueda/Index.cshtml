@@ -1,9 +1,12 @@
-﻿@{
+﻿@model List<Proyecto_1.Models.Ruta>
+
+@{
     ViewData["Title"] = "Página Principal";
 }
 
 <h1>Reservas de Viajes</h1>
 
+<!-- Sección de búsqueda de rutas -->
 <div>
     <h2>Buscar Rutas</h2>
     <form asp-action="Busqueda" method="get">
@@ -23,6 +26,47 @@
     </form>
 </div>
 
+<!-- Lista de rutas disponibles -->
+<div>
+    <h2>Rutas Disponibles</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <table>
+            <tr>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Fecha</th>
+                <th>Disponibilidad</th>
+            </tr>
+
+            @foreach (var ruta in Model)
+            {
+                <tr>
+                    <td>@ruta.Origen</td>
+                    <td>@ruta.Destino</td>
+                    <td>@ruta.Horario.ToShortDateString()</td>
+                    <td>
+                        @if (ruta.AsientosDisponibles > 0)
+                        {
+                            <span>Disponible</span>
+                        }
+                        else
+                        {
+                            <span>No Disponible</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>No hay rutas disponibles en este momento.</p>
+    }
+</div>
+
+<!-- Sección de promociones -->
 <div>
     <h2>Promociones</h2>
     <ul>
@@ -31,4 +75,3 @@
         <li>Promo 3: Asiento gratis para niños menores de 12 años</li>
     </ul>
 </div>
-

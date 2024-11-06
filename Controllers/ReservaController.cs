@@ -24,6 +24,21 @@ namespace Proyecto_1.Controllers
                 return NotFound();
             }
 
+            // Obtener los asientos ocupados de la base de datos de reservas
+
+            var asientosOcupados = _appDbContext.Reservas
+                .Where(r => r.RutaId == rutaId)
+                .Select(r => r.AsientoSeleccionado)
+                .ToList();
+
+            // Convertir la lista de strings a una lista de enteros
+            var asientosOcupadosInt = asientosOcupados
+                .SelectMany(asiento => asiento.Split(','))
+                .Select(asiento => int.Parse(asiento.Trim()))
+                .ToList();
+
+            ViewBag.AsientosOcupados = asientosOcupadosInt;
+
             return View(ruta);
         }
 
@@ -55,6 +70,19 @@ namespace Proyecto_1.Controllers
                 UsuarioId = int.Parse(userId), // ID del usuario en sesión
                 EstadoPago = "No Pagado", // Inicialmente, el estado de pago es "No Pagado"
             };
+            // Encuentra la ruta en la base de datos
+
+            if (ruta != null)
+            {
+                // Actualiza las propiedades del usuario con los nuevos valores
+                ruta.Origen = ruta.Origen;
+                ruta.Destino = ruta.Destino;
+                ruta.Precio = ruta.Precio;
+                ruta.AsientosDisponibles = ruta.AsientosDisponibles - asientos.Count;
+
+                // Guarda los cambios en la base de datos
+                _appDbContext.SaveChanges();
+            }
 
             _appDbContext.Reservas.Add(reserva);
             _appDbContext.SaveChanges();
@@ -62,6 +90,5 @@ namespace Proyecto_1.Controllers
             // Redirigir al controlador de Pagos para procesar el pago
             return RedirectToAction("ProcesarPago", "Pagos", new { reservaId = reserva.Id });
         }
-
     }
 }

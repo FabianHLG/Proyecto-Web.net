@@ -7,10 +7,25 @@
 <h1>Detalles de Ruta</h1>
 
 <h2>@Model.Origen a @Model.Destino</h2>
-<p>Fecha: @Model.Horario.ToShortDateString()</p>
-<p>Precio: @Model.Precio.ToString("C")</p>
-<p>Asientos Disponibles: @Model.AsientosDisponibles</p>
-@* <p>Descripción: @Model.Descripcion</p> <!-- Agrega más detalles según sea necesario --> *@
+<p>Fecha: @Model.Horario.ToString("dd/MM/yyyy")</p>
+<p>Hora: @Model.Horario.ToString("hh:mm tt")</p>
+<p>Precio: @Model.Precio.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
+
+@if (Model.AsientosDisponibles > 0)
+{
+    // Obtener la lista de asientos ocupados desde ViewBag
+    var asientosOcupados = ViewBag.AsientosOcupados as List<int> ?? new List<int>();
+
+    var totalAsientos = Model.AsientosDisponibles + asientosOcupados.Count;
+
+    <p>Total de Asientos: @totalAsientos</p>
+    <p>Asientos Ocupados: @asientosOcupados.Count</p>
+    <p>Asientos Disponibles: @Model.AsientosDisponibles</p>
+}
+else
+{
+    <p>No hay asientos disponibles para esta ruta.</p>
+}
 
 <div>
     <h3>Selecciona tus asientos</h3>

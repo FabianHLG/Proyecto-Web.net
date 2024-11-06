@@ -8,6 +8,5 @@
         public DateTime Horario { get; set; }
         public int Precio { get; set; }
         public int AsientosDisponibles { get; set; }
-
     }
 }

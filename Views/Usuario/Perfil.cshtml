@@ -39,3 +39,41 @@
     </div>
 </form>
 
+<h2>Historial de Compras</h2>
+
+@if (ViewBag.HistorialCompras != null && ViewBag.HistorialCompras.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha que se Reservo</th>
+                <th>Origen de la Ruta</th>
+                <th>Destino de la Ruta</th>
+                <th>Fecha de la Ruta</th>
+                <th>Precio de la Ruta</th>
+                <th>Asientos Seleccionados</th>
+                <th>Precio Total</th>
+                <th>Estado de Pago</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reserva in ViewBag.HistorialCompras)
+            {
+                <tr>
+                    <td>@reserva.Fecha.ToString("dd/MM/yyyy - hh: mm tt")</td>
+                    <td>@reserva.Origen</td>
+                    <td>@reserva.Destino</td>
+                    <td>@reserva.FechaSalida.ToString("dd/MM/yyyy - hh: mm tt")</td>
+                    <td>@reserva.PrecioRuta.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
+                    <td>@reserva.Asientos</td>
+                    <td>@reserva.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
+                    <td>@reserva.EstadoPago</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No tienes reservas registradas en tu historial de compras.</p>
+}

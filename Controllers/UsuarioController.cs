@@ -63,9 +63,10 @@ namespace Proyecto_1.Controllers
 
             if (user != null)
             {
-                // Autenticación exitosa: guarda el Id en la sesión
+                // Autenticación exitosa: guarda los datos en la sesión
                 HttpContext.Session.SetString("UserId", user.Id.ToString());
                 HttpContext.Session.SetString("UserNombre", user.Nombre);
+                HttpContext.Session.SetString("UserEmail", user.Email);
 
                 // Redirige a la página principal
                 return RedirectToAction("Index", "Búsqueda");
@@ -86,6 +87,29 @@ namespace Proyecto_1.Controllers
             }
 
             var user = _appDbContext.Usuario.Find(int.Parse(userId));
+
+            // Obtener el historial de compras del usuario
+            var historialCompras = _appDbContext.Reservas
+                .Where(r => r.UsuarioId == user.Id) // Filtrar reservas por el ID del usuario
+                .Join(_appDbContext.Rutas, // Hacer join con la tabla Rutas
+                      reserva => reserva.RutaId, // Campo en Reservas
+                      ruta => ruta.Id,           // Campo en Rutas
+                      (reserva, ruta) => new // Crear un nuevo objeto para almacenar la información
+                      {
+                          Fecha = reserva.FechaReserva, 
+                          Origen = ruta.Origen,        
+                          Destino = ruta.Destino,
+                          FechaSalida = ruta.Horario,
+                          PrecioRuta = ruta.Precio,
+                          Asientos = reserva.AsientoSeleccionado,
+                          PrecioTotal = reserva.PrecioTotal,
+                          EstadoPago = reserva.EstadoPago
+                      })
+                .ToList();
+
+            // Pasar el historial al ViewBag
+            ViewBag.HistorialCompras = historialCompras;
+
             return View(user);
         }
 

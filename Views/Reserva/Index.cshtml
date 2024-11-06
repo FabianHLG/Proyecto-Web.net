@@ -1,5 +1,4 @@
 ﻿@model Proyecto_1.Models.Ruta
-
 @{
     ViewData["Title"] = "Seleccionar Asientos";
 }
@@ -7,21 +6,29 @@
 <h1>Seleccionar Asientos</h1>
 
 <h2>@Model.Origen a @Model.Destino</h2>
-<p>Fecha: @Model.Horario.ToShortDateString()</p>
-<p>Precio: @Model.Precio.ToString("C")</p>
+<p>Fecha: @Model.Horario.ToString("dd/MM/yyyy")</p>
+<p>Hora: @Model.Horario.ToString("hh:mm tt")</p>
+<p>Precio: @Model.Precio.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
 
 <form method="post" asp-controller="Reserva" asp-action="Book">
     <input type="hidden" name="rutaId" value="@Model.Id" />
+
     <h3>Asientos Disponibles:</h3>
 
     @if (Model.AsientosDisponibles > 0)
     {
-        for (int i = 1; i <= Model.AsientosDisponibles; i++)
+        // Obtener la lista de asientos ocupados desde ViewBag
+        var asientosOcupados = ViewBag.AsientosOcupados as List<int> ?? new List<int>();
+
+        var totalAsientos = Model.AsientosDisponibles + asientosOcupados.Count;
+
+        for (int i = 1; i <= totalAsientos; i++)
         {
             <div>
                 <label>
-                    <input type="checkbox" name="asientos" value="@i" />
-                    Asiento @i
+                    <input type="checkbox" name="asientos" value="@i"
+                    @(asientosOcupados.Contains(i) ? "disabled checked" : "") />
+                    Asiento @i @(asientosOcupados.Contains(i) ? "(Ocupado)" : "")
                 </label>
             </div>
         }
@@ -33,4 +40,3 @@
 
     <button type="submit">Reservar Asientos Seleccionados</button>
 </form>
-
