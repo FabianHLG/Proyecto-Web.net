@@ -36,11 +36,12 @@ namespace Proyecto_1.Controllers
             {
                 return NotFound();
             }
-
             // Actualiza el estado de la reserva para reflejar que está pagada
             reserva.EstadoPago = "Pagado";
             _appDbContext.Reservas.Update(reserva);
             _appDbContext.SaveChanges();
+
+            HttpContext.Session.SetString("MetodoPago", metodoPago);
 
             // Redirige a una vista de confirmación de pago
             return RedirectToAction("ConfirmacionPago", new { reservaId = reserva.Id });

@@ -20,6 +20,7 @@
     <li><strong>Hora del Viaje:</strong> @Model.Ruta.Horario.ToString("hh:mm tt")</li>
     <li><strong>Asientos Seleccionados:</strong> @Model.AsientoSeleccionado</li>
     <li><strong>Precio Total:</strong> @Model.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))
+    <li><strong>Metodo de Pago:</strong> @Context.Session.GetString("MetodoPago")</li>
     <li><strong>Estado de Pago:</strong> Pago realizado</li>
 </ul>
 

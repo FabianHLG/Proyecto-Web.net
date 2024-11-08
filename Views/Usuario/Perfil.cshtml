@@ -4,6 +4,19 @@
     ViewData["Title"] = "Perfil de Usuario";
 }
 
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Mensaje"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
 <h1>Editar Perfil</h1>
 
 <form asp-controller="Usuario" asp-action="EditPerfil" method="post">
@@ -54,11 +67,20 @@
                 <th>Asientos Seleccionados</th>
                 <th>Precio Total</th>
                 <th>Estado de Pago</th>
+                <th>Tiempo Restante para Cancelar</th> 
             </tr>
         </thead>
         <tbody>
             @foreach (var reserva in ViewBag.HistorialCompras)
             {
+                var tiempoRestante = reserva.FechaSalida - DateTime.Now;
+                bool puedeCancelar = tiempoRestante.TotalHours > 24;
+
+                // Cálculo de días, horas y minutos
+                var diasRestantes = tiempoRestante.Days;
+                var horasRestantes = tiempoRestante.Hours;
+                var minutosRestantes = tiempoRestante.Minutes;
+
                 <tr>
                     <td>@reserva.Fecha.ToString("dd/MM/yyyy - hh: mm tt")</td>
                     <td>@reserva.Origen</td>
@@ -68,6 +90,30 @@
                     <td>@reserva.Asientos</td>
                     <td>@reserva.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
                     <td>@reserva.EstadoPago</td>
+                    
+                    <td>
+                        @if (tiempoRestante.TotalSeconds > 0)
+                        {
+                            <span>@diasRestantes Días, @horasRestantes Horas, @minutosRestantes Minutos</span>
+                        }
+                        else
+                        {
+                            <span>Reserva Expirada</span>
+                        }
+                    </td>
+                    <td>
+                        @if (puedeCancelar)
+                        {
+                            <form asp-action="CancelarReserva" asp-controller="Usuario" method="post">
+                                <input type="hidden" name="reservaId" value="@reserva.Id" />
+                                <button type="submit" class="btn btn-danger">Cancelar</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span>No disponible</span>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>

@@ -96,6 +96,7 @@ namespace Proyecto_1.Controllers
                       ruta => ruta.Id,           // Campo en Rutas
                       (reserva, ruta) => new // Crear un nuevo objeto para almacenar la información
                       {
+                          Id = reserva.Id,
                           Fecha = reserva.FechaReserva, 
                           Origen = ruta.Origen,        
                           Destino = ruta.Destino,
@@ -139,6 +140,64 @@ namespace Proyecto_1.Controllers
                 return RedirectToAction("Perfil");
             }
             return View("Perfil", updatedUser);
+        }
+
+        [HttpPost]
+        public IActionResult CancelarReserva(int reservaId)
+        {
+            // Obtener la reserva de la base de datos
+            var reserva = _appDbContext.Reservas.Find(reservaId);
+            if (reserva == null)
+            {
+                return NotFound("Reserva no encontrada");
+            }
+            var reservaSalida = _appDbContext.Rutas.SingleOrDefault(r => r.Id == reserva.RutaId);
+            if (reservaSalida == null)
+            {
+                return NotFound("Reserva no encontrada");
+            }
+
+            var asientosOcupados = _appDbContext.Reservas
+                .Where(r => r.RutaId == reservaSalida.Id)
+                .Select(r => r.AsientoSeleccionado)
+                .ToList();
+
+            // Convertir la lista de strings a una lista de enteros
+            var asientosOcupadosInt = asientosOcupados
+                .SelectMany(asiento => asiento.Split(','))
+                .Select(asiento => int.Parse(asiento.Trim()))
+                .ToList();
+
+            // Calcular el tiempo restante hasta la fecha de la ruta
+            var tiempoRestante = reservaSalida.Horario - DateTime.Now;
+
+            // Verificar si el tiempo restante es mayor a 24 horas
+            if (tiempoRestante.TotalHours > 24)
+            {
+                // Permitir la cancelación y eliminar la reserva
+                _appDbContext.Reservas.Remove(reserva);
+                _appDbContext.SaveChanges();
+                TempData["Mensaje"] = "Reserva cancelada exitosamente.";
+
+                if (reservaSalida != null)
+                {
+                    // Actualiza las propiedades de la ruta con los nuevos valores
+                    reservaSalida.Origen = reservaSalida.Origen;
+                    reservaSalida.Destino = reservaSalida.Destino;
+                    reservaSalida.Precio = reservaSalida.Precio;
+                    reservaSalida.AsientosDisponibles = reservaSalida.AsientosDisponibles + asientosOcupadosInt.Count;
+
+                    // Guarda los cambios en la base de datos
+                    _appDbContext.SaveChanges();
+                }
+            }
+            else
+            {
+                // Mostrar mensaje de error si ya no se puede cancelar
+                TempData["Error"] = "No se puede cancelar la reserva. Está fuera del tiempo permitido.";
+            }
+
+            return RedirectToAction("Perfil");
         }
 
     }
