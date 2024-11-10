@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Proyecto_1.Data;
+using Proyecto_1.Models;
 
 namespace Proyecto_1.Controllers
 {
@@ -14,9 +15,24 @@ namespace Proyecto_1.Controllers
 
         public IActionResult Index()
         {
-            var rutasDisponibles = _appDbContext.Rutas.Where(r => r.Horario.Date >= DateTime.Today).ToList();
+            // Obtener las rutas disponibles
+            var rutasDisponibles = _appDbContext.Rutas
+                .Where(r => r.Horario.Date >= DateTime.Today)
+                .ToList();
 
-            return View(rutasDisponibles);
+            // Obtener las promociones activas
+            var promociones = _appDbContext.Promociones
+                .Where(p => p.FechaFin >= DateTime.Today)
+                .ToList();
+
+            // Crear un modelo anónimo para pasar tanto las rutas como las promociones a la vista
+            var model = new ViewIndex
+            {
+                RutasDisponibles = rutasDisponibles,
+                Promociones = promociones
+            };
+
+            return View(model);
         }
 
         [HttpGet]

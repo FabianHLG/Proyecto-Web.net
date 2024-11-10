@@ -26,9 +26,13 @@
                     <div class="d-flex">
                         @if (Context.Session.GetString("UserId") != null) // Verifica si hay un usuario autenticado
                         {
-                            var nombreUsuario = Context.Session.GetString("UserNombre"); // Supongamos que también guardas el nombre
+                            var nombreUsuario = Context.Session.GetString("UserNombre"); 
                             <span class="navbar-text me-2">Hola, @nombreUsuario</span>
                             <a class="btn btn-outline-secondary" asp-area="" asp-controller="Usuario" asp-action="Perfil">Perfil</a>
+                            
+                            <form asp-area="" asp-controller="Usuario" asp-action="Logout" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-outline-danger">Cerrar Sesión</button>
+                            </form>
                         }
                         else
                         {

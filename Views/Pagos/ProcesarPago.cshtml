@@ -12,7 +12,18 @@
         <p><strong>Fecha:</strong> @Model.Ruta.Horario.ToString("dd/MM/yyyy")</p>
         <p><strong>Hora:</strong> @Model.Ruta.Horario.ToString("hh:mm tt")</p>
         <p><strong>Asientos:</strong> @Model.AsientoSeleccionado</p>
-        <p><strong>Precio Total:</strong> @Model.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
+
+        @if (ViewBag.PromocionActiva != null)
+        {
+            <p><strong>Precio Original:</strong> @ViewBag.PrecioOriginal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
+            <p><strong>Promoción activa:</strong> @ViewBag.PromocionActiva</p>
+            <p><strong>Descuento:</strong> @(ViewBag.PorcentajeDescuento * 100)% de descuento</p>
+            <p><strong>Precio con descuento:</strong> @Model.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
+        }
+        else
+        {
+            <p><strong>Precio Total:</strong> @ViewBag.PrecioOriginal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
+        }
     </div>
 </div>
 

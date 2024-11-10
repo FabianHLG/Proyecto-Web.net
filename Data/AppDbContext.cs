@@ -11,6 +11,7 @@
         public DbSet<Ruta> Rutas { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Reserva> Reservas { get; set; }
+        public DbSet<Promociones> Promociones { get; set; }
     }
 
 }

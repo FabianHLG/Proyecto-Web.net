@@ -74,7 +74,8 @@
             @foreach (var reserva in ViewBag.HistorialCompras)
             {
                 var tiempoRestante = reserva.FechaSalida - DateTime.Now;
-                bool puedeCancelar = tiempoRestante.TotalHours > 24;
+                bool puedeCancelar = tiempoRestante.TotalHours > 12;
+                bool volverPago = reserva.EstadoPago == "No Pagado";
 
                 // Cálculo de días, horas y minutos
                 var diasRestantes = tiempoRestante.Days;
@@ -99,6 +100,15 @@
                         else
                         {
                             <span>Reserva Expirada</span>
+                        }
+                    </td>
+                    <td>
+                        @if (volverPago)
+                        {
+                            <form asp-action="VolverPago" asp-controller="Pagos" method="post">
+                                <input type="hidden" name="reservaId" value="@reserva.Id" />
+                                <button type="submit" class="btn btn-outline-success">Pagar</button>
+                            </form>
                         }
                     </td>
                     <td>

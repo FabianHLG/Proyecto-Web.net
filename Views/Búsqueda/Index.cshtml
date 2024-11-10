@@ -1,4 +1,4 @@
-﻿@model List<Proyecto_1.Models.Ruta>
+﻿@model Proyecto_1.Models.ViewIndex
 
 @{
     ViewData["Title"] = "Página Principal";
@@ -30,7 +30,7 @@
 <div>
     <h2>Rutas Disponibles</h2>
 
-    @if (Model != null && Model.Any())
+    @if (Model.RutasDisponibles != null && Model.RutasDisponibles.Any())
     {
         <table>
             <tr>
@@ -40,7 +40,7 @@
                 <th>Disponibilidad</th>
             </tr>
 
-            @foreach (var ruta in Model)
+            @foreach (var ruta in Model.RutasDisponibles)
             {
                 <tr>
                     <td>@ruta.Origen</td>
@@ -69,9 +69,21 @@
 <!-- Sección de promociones -->
 <div>
     <h2>Promociones</h2>
-    <ul>
-        <li>Promo 1: 20% de descuento en rutas seleccionadas</li>
-        <li>Promo 2: Compra 2, lleva 3</li>
-        <li>Promo 3: Asiento gratis para niños menores de 12 años</li>
-    </ul>
+    @if (Model.Promociones != null && Model.Promociones.Any())
+    {
+        <ul>
+            @foreach (var promo in Model.Promociones)
+            {
+                <li>
+                    <strong>@promo.Descripcion</strong><br />
+                    <em>Válido del @promo.FechaInicio.ToShortDateString() al @promo.FechaFin.ToShortDateString()</em>
+                    <br />
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No hay promociones disponibles en este momento.</p>
+    }
 </div>

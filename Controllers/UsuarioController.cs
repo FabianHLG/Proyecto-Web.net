@@ -171,8 +171,8 @@ namespace Proyecto_1.Controllers
             // Calcular el tiempo restante hasta la fecha de la ruta
             var tiempoRestante = reservaSalida.Horario - DateTime.Now;
 
-            // Verificar si el tiempo restante es mayor a 24 horas
-            if (tiempoRestante.TotalHours > 24)
+            // Verificar si el tiempo restante es mayor a 12 horas
+            if (tiempoRestante.TotalHours > 12)
             {
                 // Permitir la cancelación y eliminar la reserva
                 _appDbContext.Reservas.Remove(reserva);
@@ -199,6 +199,14 @@ namespace Proyecto_1.Controllers
 
             return RedirectToAction("Perfil");
         }
+        // Acción de Logout
+        public IActionResult Logout()
+        {
+            // Limpiar la sesión del usuario
+            HttpContext.Session.Clear();
 
+            // Redirigir a la página de inicio o inicio de sesión
+            return RedirectToAction("Login", "Usuario");
+        }
     }
 }
