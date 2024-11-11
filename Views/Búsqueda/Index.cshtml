@@ -9,21 +9,25 @@
 <!-- Sección de búsqueda de rutas -->
 <div>
     <h2>Buscar Rutas</h2>
-    <form asp-action="Busqueda" method="get">
+    <form id="formBusqueda">
         <div>
             <label>Origen:</label>
-            <input type="text" name="origen" required />
+            <input type="text" id="origen" required />
         </div>
         <div>
             <label>Destino:</label>
-            <input type="text" name="destino" required />
+            <input type="text" id="destino" required />
         </div>
         <div>
             <label>Fecha:</label>
-            <input type="date" name="fecha" required />
+            <input type="date" id="fecha" required />
         </div>
-        <button type="submit">Buscar</button>
+        <button type="button" onclick="buscarRutas()">Buscar</button>
     </form>
+</div>
+
+<div id="resultadosBusqueda">
+    <!-- Los resultados de búsqueda se mostrarán aquí -->
 </div>
 
 <!-- Lista de rutas disponibles -->
@@ -87,3 +91,45 @@
         <p>No hay promociones disponibles en este momento.</p>
     }
 </div>
+
+<script>
+    function buscarRutas() {
+        const origen = document.getElementById("origen").value;
+        const destino = document.getElementById("destino").value;
+        const fecha = document.getElementById("fecha").value;
+
+        // Validación de campos
+        if (!origen || !destino || !fecha) {
+            alert("Por favor, completa todos los campos.");
+            return;
+        }
+
+        // Enviar solicitud AJAX
+        $.ajax({
+            url: '/Búsqueda/Busqueda',
+            type: 'GET',
+            data: { origen: origen, destino: destino, fecha: fecha },
+            success: function (rutas) {
+                let html = "<h2>Rutas Disponibles</h2><table><tr><th>Origen</th><th>Destino</th><th>Fecha</th><th>Disponibilidad</th></tr>";
+                if (rutas.length > 0) {
+                    rutas.forEach(ruta => {
+                        html += `<tr>
+                            <td>${ruta.origen}</td>
+                            <td>${ruta.destino}</td>
+                            <td>${ruta.fecha}</td>
+                            <td>${ruta.disponibilidad}</td>
+                            <td><a href="${ruta.seleccionarUrl}">Seleccionar</a></td>
+                        </tr>`;
+                    });
+                } else {
+                    html += "<tr><td colspan='4'>No hay rutas disponibles en este momento.</td></tr>";
+                }
+                html += "</table>";
+                document.getElementById("resultadosBusqueda").innerHTML = html;
+            },
+            error: function () {
+                document.getElementById("resultadosBusqueda").innerHTML = "<p>Error en la búsqueda. Por favor, intenta nuevamente.</p>";
+            }
+        });
+    }
+</script>

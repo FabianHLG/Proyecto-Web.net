@@ -29,10 +29,27 @@
                             var nombreUsuario = Context.Session.GetString("UserNombre"); 
                             <span class="navbar-text me-2">Hola, @nombreUsuario</span>
                             <a class="btn btn-outline-secondary" asp-area="" asp-controller="Usuario" asp-action="Perfil">Perfil</a>
-                            
-                            <form asp-area="" asp-controller="Usuario" asp-action="Logout" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-outline-danger">Cerrar Sesión</button>
+
+                            <form id="logoutForm" asp-area="" asp-controller="Usuario" asp-action="Logout" method="post" class="d-inline">
+                                <button type="button" class="btn btn-outline-danger" onclick="cerrarSesion()">Cerrar Sesión</button>
                             </form>
+
+                            <script>
+                                function cerrarSesion() {
+                                    $.ajax({
+                                        url: '/Usuario/Logout',
+                                        type: 'POST',
+                                        success: function (response) {
+                                            if (response.success) {
+                                                location.reload(); // Recarga para actualizar el menú
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("Error al cerrar sesión.");
+                                        }
+                                    });
+                                }
+                            </script>
                         }
                         else
                         {

@@ -200,13 +200,11 @@ namespace Proyecto_1.Controllers
             return RedirectToAction("Perfil");
         }
         // Acción de Logout
+        [HttpPost]
         public IActionResult Logout()
         {
-            // Limpiar la sesión del usuario
             HttpContext.Session.Clear();
-
-            // Redirigir a la página de inicio o inicio de sesión
-            return RedirectToAction("Login", "Usuario");
+            return Json(new { success = true });
         }
     }
 }

@@ -40,9 +40,16 @@ namespace Proyecto_1.Controllers
         {
             var rutas = _appDbContext.Rutas
                 .Where(r => r.Origen == origen && r.Destino == destino && r.Horario.Date == fecha.Date)
+                .Select(r => new {
+                    r.Origen,
+                    r.Destino,
+                    Fecha = r.Horario.ToShortDateString(),
+                    Disponibilidad = r.AsientosDisponibles > 0 ? "Disponible" : "No Disponible",
+                    SeleccionarUrl = Url.Action("Detalles", new { id = r.Id })
+                })
                 .ToList();
 
-            return View(rutas);
+            return Json(rutas);
         }
 
         public IActionResult Detalles(int id)
