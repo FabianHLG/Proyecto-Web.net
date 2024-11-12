@@ -1,108 +1,106 @@
 
-/* General */
+/* Estilo global */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Color de fondo ligero */
     margin: 0;
     padding: 0;
 }
 
-/* Navegación */
+.container {
+    margin-top: 20px;
+}
+
+/* Navbar */
 .navbar {
-    padding: 0.5rem 1rem;
+    background-color: #007bff; /* Fondo azul para la barra de navegación */
 }
 
-.navbar-brand {
-    font-weight: bold;
-    font-size: 1.25rem;
-    color: #007bff;
-}
-
-.nav-link {
-    color: #333;
-    font-weight: 500;
-}
-
-    .nav-link:hover {
-        color: #0056b3;
-        text-decoration: none;
+    .navbar .navbar-brand {
+        color: #fff !important; /* Color blanco para la marca */
+        font-weight: bold;
     }
 
-.navbar-collapse {
-    flex-grow: 1;
-    justify-content: space-between;
-}
+    .navbar .nav-link {
+        color: #fff !important; /* Asegura que los enlaces sean blancos */
+    }
 
-.navbar-toggler {
-    border-color: #ddd;
-}
+        .navbar .nav-link:hover {
+            color: #dcdcdc !important; /* Cambio de color al pasar el cursor */
+        }
 
-.navbar-toggler-icon {
-    color: #333;
-}
+    .navbar .btn-outline-light {
+        border-color: #fff;
+        color: #fff;
+    }
 
-/* Botones de acción */
+        .navbar .btn-outline-light:hover {
+            background-color: #fff;
+            color: #007bff;
+        }
+
+/* Estilos para los botones */
 .btn-outline-primary {
-    color: #007bff;
     border-color: #007bff;
+    color: #007bff;
 }
 
     .btn-outline-primary:hover {
-        color: #fff;
         background-color: #007bff;
+        color: white;
     }
 
 .btn-outline-success {
-    color: #28a745;
     border-color: #28a745;
+    color: #28a745;
 }
 
     .btn-outline-success:hover {
-        color: #fff;
         background-color: #28a745;
+        color: white;
     }
 
-/* Contenedor principal */
-.container {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 20px;
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
 }
 
-/* Footer */
-.footer {
-    padding: 10px 0;
-    background-color: #f8f9fa;
-    text-align: center;
-    font-size: 0.875rem;
-    color: #6c757d;
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+.btn-outline-light {
+    border-color: #fff;
+    color: #fff;
 }
 
-    .footer a {
+    .btn-outline-light:hover {
+        background-color: #fff;
         color: #007bff;
     }
 
-        .footer a:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
-
-/* Ajustes para dispositivos móviles */
-@media (max-width: 576px) {
-    .navbar-collapse {
-        text-align: center;
-    }
-
-    .navbar-nav {
-        width: 100%;
-    }
-
-        .navbar-nav .nav-item {
-            padding: 0.5rem 0;
-        }
-
-    .btn {
-        width: 100%;
-        margin-top: 5px;
-    }
+/* Iconos de los botones */
+button i.bi {
+    font-size: 1.2rem;
 }
+
+/* Footer */
+footer {
+    background-color: #f1f1f1;
+    padding: 10px 0;
+}
+
+    footer .container {
+        text-align: center;
+        color: #6c757d;
+    }
+
+    footer a {
+        color: #007bff;
+    }
+
+        footer a:hover {
+            text-decoration: none;
+            color: #0056b3;
+        }

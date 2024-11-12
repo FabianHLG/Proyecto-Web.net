@@ -4,6 +4,12 @@
     ViewData["Title"] = "Perfil de Usuario";
 }
 
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/Perfil.css" asp-append-version="true" />
+</head>
+
 @if (TempData["Mensaje"] != null)
 {
     <div class="alert alert-success">
@@ -17,119 +23,122 @@
         @TempData["Error"]
     </div>
 }
-<h1>Editar Perfil</h1>
 
-<form asp-controller="Usuario" asp-action="EditPerfil" method="post">
-    <input type="hidden" asp-for="Id" />
+<div class="container">
+    <h1>Editar Perfil</h1>
 
-    <div>
-        <label>Nombre</label>
-        <input asp-for="Nombre" class="form-control" required />
-    </div>
+    <form asp-controller="Usuario" asp-action="EditPerfil" method="post">
+        <input type="hidden" asp-for="Id" />
 
-    <div>
-        <label>Email</label>
-        <input asp-for="Email" type="email" class="form-control" required />
-    </div>
+        <div class="form-group">
+            <label>Nombre</label>
+            <input asp-for="Nombre" class="form-control" required />
+        </div>
 
-    <div>
-        <label>Dirección Exacta</label>
-        <input asp-for="DireccionExacta" class="form-control" required />
-    </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input asp-for="Email" type="email" class="form-control" required />
+        </div>
 
-    <div>
-        <label>Teléfono</label>
-        <input asp-for="Telefono" class="form-control" required />
-    </div>
+        <div class="form-group">
+            <label>Dirección Exacta</label>
+            <input asp-for="DireccionExacta" class="form-control" required />
+        </div>
 
-    <div>
-        <label>Fecha de Nacimiento</label>
-        <input asp-for="FechaNacimiento" type="date" class="form-control" required />
-    </div>
+        <div class="form-group">
+            <label>Teléfono</label>
+            <input asp-for="Telefono" class="form-control" required />
+        </div>
 
-    <div>
-        <button type="submit" class="btn btn-primary">Actualizar</button>
-    </div>
-</form>
+        <div class="form-group">
+            <label>Fecha de Nacimiento</label>
+            <input asp-for="FechaNacimiento" type="date" class="form-control" required />
+        </div>
 
-<h2>Historial de Compras</h2>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+        </div>
+    </form>
 
-@if (ViewBag.HistorialCompras != null && ViewBag.HistorialCompras.Count > 0)
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Fecha que se Reservo</th>
-                <th>Origen de la Ruta</th>
-                <th>Destino de la Ruta</th>
-                <th>Fecha de la Ruta</th>
-                <th>Precio de la Ruta</th>
-                <th>Asientos Seleccionados</th>
-                <th>Precio Total</th>
-                <th>Estado de Pago</th>
-                <th>Tiempo Restante para Cancelar</th> 
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var reserva in ViewBag.HistorialCompras)
-            {
-                var tiempoRestante = reserva.FechaSalida - DateTime.Now;
-                bool puedeCancelar = tiempoRestante.TotalHours > 12;
-                bool volverPago = reserva.EstadoPago == "No Pagado";
+    <h2>Historial de Compras</h2>
 
-                // Cálculo de días, horas y minutos
-                var diasRestantes = tiempoRestante.Days;
-                var horasRestantes = tiempoRestante.Hours;
-                var minutosRestantes = tiempoRestante.Minutes;
-
+    @if (ViewBag.HistorialCompras != null && ViewBag.HistorialCompras.Count > 0)
+    {
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@reserva.Fecha.ToString("dd/MM/yyyy - hh: mm tt")</td>
-                    <td>@reserva.Origen</td>
-                    <td>@reserva.Destino</td>
-                    <td>@reserva.FechaSalida.ToString("dd/MM/yyyy - hh: mm tt")</td>
-                    <td>@reserva.PrecioRuta.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
-                    <td>@reserva.Asientos</td>
-                    <td>@reserva.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
-                    <td>@reserva.EstadoPago</td>
-                    
-                    <td>
-                        @if (tiempoRestante.TotalSeconds > 0)
-                        {
-                            <span>@diasRestantes Días, @horasRestantes Horas, @minutosRestantes Minutos</span>
-                        }
-                        else
-                        {
-                            <span>Reserva Expirada</span>
-                        }
-                    </td>
-                    <td>
-                        @if (volverPago)
-                        {
-                            <form asp-action="VolverPago" asp-controller="Pagos" method="post">
-                                <input type="hidden" name="reservaId" value="@reserva.Id" />
-                                <button type="submit" class="btn btn-outline-success">Pagar</button>
-                            </form>
-                        }
-                    </td>
-                    <td>
-                        @if (puedeCancelar)
-                        {
-                            <form asp-action="CancelarReserva" asp-controller="Usuario" method="post">
-                                <input type="hidden" name="reservaId" value="@reserva.Id" />
-                                <button type="submit" class="btn btn-danger">Cancelar</button>
-                            </form>
-                        }
-                        else
-                        {
-                            <span>No disponible</span>
-                        }
-                    </td>
+                    <th>Fecha que se Reservó</th>
+                    <th>Origen de la Ruta</th>
+                    <th>Destino de la Ruta</th>
+                    <th>Fecha de la Ruta</th>
+                    <th>Precio de la Ruta</th>
+                    <th>Asientos Seleccionados</th>
+                    <th>Precio Total</th>
+                    <th>Estado de Pago</th>
+                    <th>Tiempo Restante para Cancelar</th>
+                    <th>Acciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No tienes reservas registradas en tu historial de compras.</p>
-}
+            </thead>
+            <tbody>
+                @foreach (var reserva in ViewBag.HistorialCompras)
+                {
+                    var tiempoRestante = reserva.FechaSalida - DateTime.Now;
+                    bool puedeCancelar = tiempoRestante.TotalHours > 12;
+                    bool volverPago = reserva.EstadoPago == "No Pagado";
+
+                    // Cálculo de días, horas y minutos
+                    var diasRestantes = tiempoRestante.Days;
+                    var horasRestantes = tiempoRestante.Hours;
+                    var minutosRestantes = tiempoRestante.Minutes;
+
+                    <tr>
+                        <td>@reserva.Fecha.ToString("dd/MM/yyyy - hh: mm tt")</td>
+                        <td>@reserva.Origen</td>
+                        <td>@reserva.Destino</td>
+                        <td>@reserva.FechaSalida.ToString("dd/MM/yyyy - hh: mm tt")</td>
+                        <td>@reserva.PrecioRuta.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
+                        <td>@reserva.Asientos</td>
+                        <td>@reserva.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
+                        <td>@reserva.EstadoPago</td>
+                        <td>
+                            @if (tiempoRestante.TotalSeconds > 0)
+                            {
+                                <span>@diasRestantes Días, @horasRestantes Horas, @minutosRestantes Minutos</span>
+                            }
+                            else
+                            {
+                                <span>Reserva Expirada</span>
+                            }
+                        </td>
+                        <td>
+                            @if (volverPago)
+                            {
+                                <form asp-action="VolverPago" asp-controller="Pagos" method="post">
+                                    <input type="hidden" name="reservaId" value="@reserva.Id" />
+                                    <button type="submit" class="btn btn-outline-success">Pagar</button>
+                                </form>
+                            }
+                        </td>
+                        <td>
+                            @if (puedeCancelar)
+                            {
+                                <form asp-action="CancelarReserva" asp-controller="Usuario" method="post">
+                                    <input type="hidden" name="reservaId" value="@reserva.Id" />
+                                    <button type="submit" class="btn btn-danger">Cancelar</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span>No disponible</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No tienes reservas registradas en tu historial de compras.</p>
+    }
+</div>

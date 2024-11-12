@@ -57,7 +57,8 @@ namespace Proyecto_1.Controllers
             var ruta = _appDbContext.Rutas.Find(rutaId);
             if (ruta == null || asientos == null || asientos.Count == 0)
             {
-                return BadRequest("Ruta o asientos no válidos.");
+                TempData["ErrorData"] = "UPS!! ALGO ESTA VACIO";
+                return RedirectToAction("Index", "Búsqueda");
             }
 
             // Crear un objeto de reserva para almacenar los detalles en la base de datos

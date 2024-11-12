@@ -1,0 +1,136 @@
+﻿/* Contenedor principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+h1 {
+    font-size: 32px;
+    color: royalblue;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    color: white;
+    margin-top: 40px;
+    font-weight: 500;
+    -webkit-text-stroke: 1px royalblue;
+}
+
+/* Formulario de búsqueda */
+.search-form {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+    .search-form input {
+        width: 100%;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .search-form button {
+        width: 100%;
+        padding: 15px;
+        background-color: royalblue;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .search-form button:hover {
+            background-color: #4e73df;
+        }
+
+/* Resultados de búsqueda */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+    .results-table th, .results-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .results-table th {
+        background-color: royalblue;
+        color: white;
+        font-weight: bold;
+    }
+
+    .results-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+.availability {
+    font-weight: bold;
+    color: green;
+}
+
+    .availability.no {
+        color: red;
+    }
+
+/* Promociones */
+.promotions {
+    margin-top: 40px;
+}
+
+    .promotions ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+    }
+
+    .promotions li {
+        background-color: #f0f8ff;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+        .promotions li strong {
+            color: royalblue;
+        }
+
+        .promotions li em {
+            color: #888;
+        }
+/* Estilo para el enlace de seleccionar */
+.btn-seleccionar {
+    padding: 8px 12px;
+    background-color: royalblue;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-seleccionar:hover {
+        background-color: rgb(56, 90, 194);
+    }

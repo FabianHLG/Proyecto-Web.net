@@ -1,4 +1,4 @@
-/* Estilos del contenedor principal */
+﻿/* Estilos del contenedor principal */
 .container {
     max-width: 400px;
     margin: 0 auto;
@@ -9,10 +9,13 @@
     text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 5px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* Título */
 .title {
     font-size: 28px;
     color: royalblue;
@@ -46,6 +49,7 @@
         animation: pulse 1s linear infinite;
     }
 
+/* Estilos para el mensaje y el enlace */
 .message, .signin {
     color: rgba(88, 87, 87, 0.822);
     font-size: 14px;
@@ -66,8 +70,9 @@
 /* Flexbox para inputs lado a lado */
 .flex {
     display: flex;
+    flex-direction: column; /* Cambiado a columna para que los inputs ocupen el ancho completo */
     width: 100%;
-    gap: 6px;
+    gap: 15px; /* Espaciado entre los inputs */
 }
 
 .form label {
@@ -76,13 +81,13 @@
 }
 
     .form label .input {
-        width: 100%;
+        width: 100%; /* Asegura que los inputs ocupen el 100% del ancho */
         padding: 10px 10px 20px 10px;
         outline: 0;
         border: 1px solid rgba(105, 105, 105, 0.397);
         border-radius: 10px;
-        font-size: 0.8em; /* Tama�o de letra reducido */
-        margin-bottom: 15px; /* Espacio entre las cajas de texto */
+        font-size: 0.8em;
+        margin-bottom: 15px;
     }
 
         .form label .input + span {
@@ -120,14 +125,14 @@
     color: #fff;
     font-size: 16px;
     transition: background-color 0.3s ease;
-    width: 100%;
+    width: 100%; /* Asegura que el botón ocupe todo el ancho */
 }
 
     .submit:hover {
         background-color: rgb(56, 90, 194);
     }
 
-/* Animaci�n para los puntos de la cabecera */
+/* Animación para los puntos de la cabecera */
 @keyframes pulse {
     from {
         transform: scale(0.9);

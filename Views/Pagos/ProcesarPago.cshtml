@@ -4,72 +4,79 @@
     ViewData["Title"] = "Proceso de Pago";
 }
 
-<div class="card">
-    <h1>Proceso de Pago</h1>
-    <div class="card-body">
-        <p><strong>Origen:</strong> @Model.Ruta.Origen</p>
-        <p><strong>Destino:</strong> @Model.Ruta.Destino</p>
-        <p><strong>Fecha:</strong> @Model.Ruta.Horario.ToString("dd/MM/yyyy")</p>
-        <p><strong>Hora:</strong> @Model.Ruta.Horario.ToString("hh:mm tt")</p>
-        <p><strong>Asientos:</strong> @Model.AsientoSeleccionado</p>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/ProcesarPago.css" asp-append-version="true" />
+</head>
 
-        @if (ViewBag.PromocionActiva != null)
-        {
-            <p><strong>Precio Original:</strong> @ViewBag.PrecioOriginal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
-            <p><strong>Promoción activa:</strong> @ViewBag.PromocionActiva</p>
-            <p><strong>Descuento:</strong> @(ViewBag.PorcentajeDescuento * 100)% de descuento</p>
-            <p><strong>Precio con descuento:</strong> @Model.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
-        }
-        else
-        {
-            <p><strong>Precio Total:</strong> @ViewBag.PrecioOriginal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
-        }
+<div class="payment-container">
+    <div class="card">
+        <h1>Proceso de Pago</h1>
+        <div class="card-body">
+            <h2>@Model.Ruta.Origen a @Model.Ruta.Destino</h2>
+            <p><strong>Fecha:</strong> @Model.Ruta.Horario.ToString("dd/MM/yyyy")</p>
+            <p><strong>Hora:</strong> @Model.Ruta.Horario.ToString("hh:mm tt")</p>
+            <p><strong>Asientos:</strong> @Model.AsientoSeleccionado</p>
+
+            @if (ViewBag.PromocionActiva != null)
+            {
+                <p><strong>Precio Original:</strong> @ViewBag.PrecioOriginal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
+                <p><strong>Promoción activa:</strong> @ViewBag.PromocionActiva</p>
+                <p><strong>Descuento:</strong> @(ViewBag.PorcentajeDescuento * 100)% de descuento</p>
+                <p><strong>Precio con descuento:</strong> @Model.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
+            }
+            else
+            {
+                <p><strong>Precio Total:</strong> @ViewBag.PrecioOriginal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
+            }
+        </div>
     </div>
+
+    @if (Context.Session.GetString("UserId") != null) // Verifica si hay un usuario autenticado
+    {
+        var nombreUsuario = Context.Session.GetString("UserNombre");
+        var emailUsuario = Context.Session.GetString("UserEmail");
+
+        <form method="post" asp-action="ConfirmarPago" class="payment-form">
+            <input type="hidden" name="reservaId" value="@Model.Id" />
+
+            <div class="form-group">
+                <label for="metodoPago">Método de Pago:</label>
+                <select id="metodoPago" name="metodoPago" required onchange="mostrarDetallesPago()">
+                    <option value="">Seleccione un método de pago</option>
+                    <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                    <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                    <option value="PayPal">PayPal</option>
+                </select>
+            </div>
+
+            <div id="detallesTarjeta" class="payment-details" style="display: none;">
+                <h3>Detalles de Tarjeta de Crédito</h3>
+                <p><strong>Número de Tarjeta:</strong> <input type="text" value="4111 1111 1111 1111" readonly /></p>
+                <p><strong>Nombre en la Tarjeta:</strong> <input type="text" value="@nombreUsuario" readonly /></p>
+                <p><strong>Fecha de Expiración:</strong> <input type="text" value="12/25" readonly /></p>
+                <p><strong>CVV:</strong> <input type="text" value="123" readonly /></p>
+            </div>
+
+            <div id="detallesTransferencia" class="payment-details" style="display: none;">
+                <h3>Detalles de Transferencia Bancaria</h3>
+                <p><strong>Banco:</strong> Banco Ficticio</p>
+                <p><strong>Número de Cuenta:</strong> <input type="text" value="1234567890123456" readonly /></p>
+                <p><strong>Nombre del Titular:</strong> <input type="text" value="Empresa de Transporte XYZ" readonly /></p>
+                <p><strong>Referencia de Pago:</strong> <input type="text" value="REF123456789" readonly /></p>
+            </div>
+
+            <div id="detallesPayPal" class="payment-details" style="display: none;">
+                <h3>Detalles de PayPal</h3>
+                <p><strong>Cuenta PayPal:</strong> <input type="text" value="@emailUsuario" readonly /></p>
+                <p><strong>Referencia de Transacción:</strong> <input type="text" value="TXN987654321" readonly /></p>
+            </div>
+
+            <button type="submit" class="submit-btn">Pagar</button>
+        </form>
+    }
 </div>
-
-@if (Context.Session.GetString("UserId") != null) // Verifica si hay un usuario autenticado
-{
-    var nombreUsuario = Context.Session.GetString("UserNombre");
-    var emailUsuario = Context.Session.GetString("UserEmail");
-
-    <form method="post" asp-action="ConfirmarPago">
-        <input type="hidden" name="reservaId" value="@Model.Id" />
-
-        <div>
-            <label>Método de Pago:</label>
-            <select id="metodoPago" name="metodoPago" required onchange="mostrarDetallesPago()">
-                <option value="">Seleccione un método de pago</option>
-                <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
-                <option value="Transferencia Bancaria">Transferencia Bancaria</option>
-                <option value="PayPal">PayPal</option>
-            </select>
-        </div>
-
-        <div id="detallesTarjeta" style="display: none; margin-top: 15px;">
-            <h3>Detalles de Tarjeta de Crédito</h3>
-            <p><strong>Número de Tarjeta:</strong> <input type="text" value="4111 1111 1111 1111" readonly /></p>
-            <p><strong>Nombre en la Tarjeta:</strong> <input type="text" value=@nombreUsuario readonly /></p>
-            <p><strong>Fecha de Expiración:</strong> <input type="text" value="12/25" readonly /></p>
-            <p><strong>CVV:</strong> <input type="text" value="123" readonly /></p>
-        </div>
-
-        <div id="detallesTransferencia" style="display: none; margin-top: 15px;">
-            <h3>Detalles de Transferencia Bancaria</h3>
-            <p><strong>Banco:</strong> Banco Ficticio</p>
-            <p><strong>Número de Cuenta:</strong> <input type="text" value="1234567890123456" readonly /></p>
-            <p><strong>Nombre del Titular:</strong> <input type="text" value="Empresa de Transporte XYZ" readonly /></p>
-            <p><strong>Referencia de Pago:</strong> <input type="text" value="REF123456789" readonly /></p>
-        </div>
-
-        <div id="detallesPayPal" style="display: none; margin-top: 15px;">
-            <h3>Detalles de PayPal</h3>
-            <p><strong>Cuenta PayPal:</strong> <input type="text" value=@emailUsuario readonly /></p>
-            <p><strong>Referencia de Transacción:</strong> <input type="text" value="TXN987654321" readonly /></p>
-        </div>
-
-        <button type="submit" style="margin-top: 15px;">Pagar</button>
-    </form>
-}
 
 <script>
     function mostrarDetallesPago() {
@@ -79,5 +86,6 @@
         document.getElementById("detallesPayPal").style.display = metodo === "PayPal" ? "block" : "none";
     }
 </script>
+
 
 

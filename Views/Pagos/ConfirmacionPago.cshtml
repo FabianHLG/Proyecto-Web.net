@@ -4,28 +4,41 @@
     ViewData["Title"] = "Confirmación de Pago";
 }
 
-<h1>Confirmación de Pago</h1>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/ConfirmarPago.css" asp-append-version="true" />
+</head>
 
-@if (Context.Session.GetString("UserId") != null) // Verifica si hay un usuario autenticado
-{
-    var nombreUsuario = Context.Session.GetString("UserNombre");
-    <p>¡Gracias por su compra, @nombreUsuario! Su pago ha sido procesado con éxito el día @DateTime.Now.ToString("dd/MM/yyyy") a las @DateTime.Now.ToString("hh:mm tt").</p>
-}
+<div class="container">
+    <h1>Confirmación de Pago</h1>
 
-<p>Detalles de la Reserva:</p>
-<ul>
-    <li><strong>Origen:</strong> @Model.Ruta.Origen</li>
-    <li><strong>Destino:</strong> @Model.Ruta.Destino</li>
-    <li><strong>Fecha del Viaje:</strong> @Model.Ruta.Horario.ToString("dd/MM/yyyy")</li>
-    <li><strong>Hora del Viaje:</strong> @Model.Ruta.Horario.ToString("hh:mm tt")</li>
-    <li><strong>Asientos Seleccionados:</strong> @Model.AsientoSeleccionado</li>
-    <li><strong>Precio Total:</strong> @Model.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))
-    <li><strong>Metodo de Pago:</strong> @Context.Session.GetString("MetodoPago")</li>
-    <li><strong>Estado de Pago:</strong> Pago realizado</li>
-</ul>
+    @if (Context.Session.GetString("UserId") != null) // Verifica si hay un usuario autenticado
+    {
+        var nombreUsuario = Context.Session.GetString("UserNombre");
+        <div class="ticket">
+            <p>¡Gracias por su compra, @nombreUsuario!</p>
+            <p>Su pago ha sido procesado con éxito el día @DateTime.Now.ToString("dd/MM/yyyy") a las @DateTime.Now.ToString("hh:mm tt").</p>
+        </div>
+    }
 
-<p>Recuerde llegar al punto de salida al menos 15 minutos antes de la hora programada, que es @Model.Ruta.Horario.ToString("hh:mm tt") para su comodidad y seguridad.</p>
+    <p>Detalles de la Reserva:</p>
+    <ul>
+        <li><strong>Origen:</strong> @Model.Ruta.Origen</li>
+        <li><strong>Destino:</strong> @Model.Ruta.Destino</li>
+        <li><strong>Fecha del Viaje:</strong> @Model.Ruta.Horario.ToString("dd/MM/yyyy")</li>
+        <li><strong>Hora del Viaje:</strong> @Model.Ruta.Horario.ToString("hh:mm tt")</li>
+        <li><strong>Asientos Seleccionados:</strong> @Model.AsientoSeleccionado</li>
+        <li><strong>Precio Total:</strong> @Model.PrecioTotal.ToString("C", new System.Globalization.CultureInfo("es-CR"))</li>
+        <li><strong>Metodo de Pago:</strong> @Context.Session.GetString("MetodoPago")</li>
+        <li><strong>Estado de Pago:</strong> Pago realizado</li>
+    </ul>
 
-<a asp-area="" asp-controller="Búsqueda" asp-action="Index" class="btn btn-primary">Volver al Inicio</a>
+    <div class="payment-details">
+        <p>Recuerde llegar al punto de salida al menos 15 minutos antes de la hora programada, que es @Model.Ruta.Horario.ToString("hh:mm tt") para su comodidad y seguridad.</p>
+        <a asp-area="" asp-controller="Búsqueda" asp-action="Index">Volver al Inicio</a>
+    </div>
+</div>
+
 
 

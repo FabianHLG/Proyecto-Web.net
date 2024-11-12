@@ -4,33 +4,42 @@
     ViewData["Title"] = "Detalles de Ruta";
 }
 
-<h1>Detalles de Ruta</h1>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/Detalles.css" asp-append-version="true" />
+</head>
 
-<h2>@Model.Origen a @Model.Destino</h2>
-<p>Fecha: @Model.Horario.ToString("dd/MM/yyyy")</p>
-<p>Hora: @Model.Horario.ToString("hh:mm tt")</p>
-<p>Precio: @Model.Precio.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
+<div class="container">
+    <h1>Detalles de Ruta</h1>
 
-@if (Model.AsientosDisponibles > 0)
-{
-    // Obtener la lista de asientos ocupados desde ViewBag
-    var asientosOcupados = ViewBag.AsientosOcupados as List<int> ?? new List<int>();
+    <h2>@Model.Origen a @Model.Destino</h2>
+    <div class="details">
+        <p>Fecha: @Model.Horario.ToString("dd/MM/yyyy")</p>
+        <p>Hora: @Model.Horario.ToString("hh:mm tt")</p>
+        <p>Precio: @Model.Precio.ToString("C", new System.Globalization.CultureInfo("es-CR"))</p>
 
-    var totalAsientos = Model.AsientosDisponibles + asientosOcupados.Count;
+        @if (Model.AsientosDisponibles > 0)
+        {
+            var asientosOcupados = ViewBag.AsientosOcupados as List<int> ?? new List<int>();
+            var totalAsientos = Model.AsientosDisponibles + asientosOcupados.Count;
 
-    <p>Total de Asientos: @totalAsientos</p>
-    <p>Asientos Ocupados: @asientosOcupados.Count</p>
-    <p>Asientos Disponibles: @Model.AsientosDisponibles</p>
-}
-else
-{
-    <p>No hay asientos disponibles para esta ruta.</p>
-}
+            <p>Total de Asientos: @totalAsientos</p>
+            <p>Asientos Ocupados: @asientosOcupados.Count</p>
+            <p>Asientos Disponibles: @Model.AsientosDisponibles</p>
+        }
+        else
+        {
+            <p class="no-asientos">No hay asientos disponibles para esta ruta.</p>
+        }
 
-<div>
-    <h3>Selecciona tus asientos</h3>
-    <form method="get" asp-controller="Reserva" asp-action="Index">
-        <input type="hidden" name="rutaId" value="@Model.Id" />
-        <button type="submit">Seleccionar Asientos</button>
-    </form>
+        <div>
+            <h3>Selecciona tus asientos</h3>
+            <form method="get" asp-controller="Reserva" asp-action="Index">
+                <input type="hidden" name="rutaId" value="@Model.Id" />
+                <button type="submit">Seleccionar Asientos</button>
+            </form>
+        </div>
+    </div>
 </div>
+

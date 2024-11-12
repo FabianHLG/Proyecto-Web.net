@@ -10,45 +10,46 @@
     <link rel="stylesheet" href="~/css/Registro.css" asp-append-version="true" />
 </head>
 
-<h1 class="title">Registro de Usuario</h1>
-<p class="message">Regístrate ahora y obtén acceso completo a nuestro sitio.</p>
+<div class="container">
+    <h1 class="title">Registro de Usuario</h1>
+    <p class="message">Regístrate ahora y obtén tu recerva.</p>
 
-<div class="form-container">
-<form class="form" asp-controller="Usuario" asp-action="Registro" method="post">
-    <div class="flex">
+    <form class="form" asp-controller="Usuario" asp-action="Registro" method="post">
+        <div class="flex">
+            <label>
+                <input type="text" asp-for="Nombre" class="input" required />
+                <span>Nombre</span>
+            </label>
+
+            <label>
+                <input type="email" asp-for="Email" class="input" required />
+                <span>Email</span>
+            </label>
+        </div>
+
         <label>
-            <input type="text" asp-for="Nombre" class="input" required />
-            <span>Nombre</span>
+            <input type="password" asp-for="Contraseña" class="input" required />
+            <span>Contraseña</span>
         </label>
 
         <label>
-            <input type="email" asp-for="Email" class="input" required />
-            <span>Email</span>
+            <input type="date" asp-for="FechaNacimiento" class="input" required />
         </label>
-    </div>
 
-    <label>
-        <input type="password" asp-for="Contraseña" class="input" required />
-        <span>Contraseña</span>
-    </label>
+        <label>
+            <input type="text" asp-for="DireccionExacta" class="input" required />
+            <span>Dirección Exacta</span>
+        </label>
 
-    <label>
-        <input type="date" asp-for="FechaNacimiento" class="input" required />
-    </label>
-
-    <label>
-        <input type="text" asp-for="DireccionExacta" class="input" required />
-        <span>Dirección Exacta</span>
-    </label>
-
-    <label>
-        <input type="tel" asp-for="Telefono" class="input" required />
-        <span>Teléfono</span>
-    </label>
-
-    <input type="hidden" asp-for="FechaRegistro" value="@DateTime.Now" />
-
-    <button type="submit" class="submit">Registrar</button>
-</form>
+        <label>
+            <input type="tel" asp-for="Telefono" class="input" required />
+            <span>Teléfono</span>
+        </label>
+        <input type="hidden" asp-for="FechaRegistro" value="@DateTime.Now" />
+        <br />
+        <button type="submit" class="submit">Registrar</button>
+        <br/>
+    </form>
+    <p class="signin">¿Ya tienes cuenta? <a href="@Url.Action("Login", "Usuario")">Inicia sesión aquí</a></p>
 </div>
-<p class="signin">¿Ya tienes cuenta? <a href="@Url.Action("Login", "Usuario")">Inicia sesión aquí</a></p>
+

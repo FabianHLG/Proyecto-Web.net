@@ -4,92 +4,107 @@
     ViewData["Title"] = "Página Principal";
 }
 
-<h1>Reservas de Viajes</h1>
+@if (TempData["ErrorData"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["ErrorData"]
+    </div>
+}
 
-<!-- Sección de búsqueda de rutas -->
-<div>
-    <h2>Buscar Rutas</h2>
-    <form id="formBusqueda">
-        <div>
-            <label>Origen:</label>
-            <input type="text" id="origen" required />
-        </div>
-        <div>
-            <label>Destino:</label>
-            <input type="text" id="destino" required />
-        </div>
-        <div>
-            <label>Fecha:</label>
-            <input type="date" id="fecha" required />
-        </div>
-        <button type="button" onclick="buscarRutas()">Buscar</button>
-    </form>
-</div>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/PaginaPrincipal.css" asp-append-version="true" />
+</head>
 
-<div id="resultadosBusqueda">
-    <!-- Los resultados de búsqueda se mostrarán aquí -->
-</div>
+<div class="container">
+    <h1>Reservas de Viajes</h1>
 
-<!-- Lista de rutas disponibles -->
-<div>
-    <h2>Rutas Disponibles</h2>
+    <!-- Lista de rutas disponibles -->
+    <div>
+        <h2>Rutas Disponibles</h2>
 
-    @if (Model.RutasDisponibles != null && Model.RutasDisponibles.Any())
-    {
-        <table>
-            <tr>
-                <th>Origen</th>
-                <th>Destino</th>
-                <th>Fecha</th>
-                <th>Disponibilidad</th>
-            </tr>
-
-            @foreach (var ruta in Model.RutasDisponibles)
-            {
+        @if (Model.RutasDisponibles != null && Model.RutasDisponibles.Any())
+        {
+            <table class="results-table">
                 <tr>
-                    <td>@ruta.Origen</td>
-                    <td>@ruta.Destino</td>
-                    <td>@ruta.Horario.ToShortDateString()</td>
-                    <td>
-                        @if (ruta.AsientosDisponibles > 0)
-                        {
-                            <span>Disponible</span>
-                        }
-                        else
-                        {
-                            <span>No Disponible</span>
-                        }
-                    </td>
+                    <th>Origen</th>
+                    <th>Destino</th>
+                    <th>Fecha</th>
+                    <th>Disponibilidad</th>
                 </tr>
-            }
-        </table>
-    }
-    else
-    {
-        <p>No hay rutas disponibles en este momento.</p>
-    }
-</div>
 
-<!-- Sección de promociones -->
-<div>
-    <h2>Promociones</h2>
-    @if (Model.Promociones != null && Model.Promociones.Any())
-    {
-        <ul>
-            @foreach (var promo in Model.Promociones)
-            {
-                <li>
-                    <strong>@promo.Descripcion</strong><br />
-                    <em>Válido del @promo.FechaInicio.ToShortDateString() al @promo.FechaFin.ToShortDateString()</em>
-                    <br />
-                </li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No hay promociones disponibles en este momento.</p>
-    }
+                @foreach (var ruta in Model.RutasDisponibles)
+                {
+                    <tr>
+                        <td>@ruta.Origen</td>
+                        <td>@ruta.Destino</td>
+                        <td>@ruta.Horario.ToShortDateString()</td>
+                        <td class="@((ruta.AsientosDisponibles > 0) ? "availability" : "availability no")">
+                            @if (ruta.AsientosDisponibles > 0)
+                            {
+                                <span>Disponible</span>
+                            }
+                            else
+                            {
+                                <span>No Disponible</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p>No hay rutas disponibles en este momento.</p>
+        }
+    </div>
+    <br/>
+    <!-- Sección de búsqueda de rutas -->
+    <div class="search-form">
+        <h2>Buscar Rutas</h2>
+
+        <form id="formBusqueda">
+            <div>
+                <label for="origen">Origen:</label>
+                <input type="text" id="origen" required placeholder="Ej. San Jose" />
+            </div>
+            <div>
+                <label for="destino">Destino:</label>
+                <input type="text" id="destino" required placeholder="Ej. Cartago" />
+            </div>
+            <div>
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" required />
+            </div>
+            <button type="button" onclick="buscarRutas()">Buscar</button>
+        </form>
+    </div>
+
+    <div id="resultadosBusqueda">
+        <!-- Los resultados de búsqueda se mostrarán aquí -->
+    </div>
+
+    <!-- Sección de promociones -->
+    <div class="promotions">
+        <h2>Promociones</h2>
+        @if (Model.Promociones != null && Model.Promociones.Any())
+        {
+            <ul>
+                @foreach (var promo in Model.Promociones)
+                {
+                    <li>
+                        <strong>@promo.Descripcion</strong><br />
+                        <em>Válido del @promo.FechaInicio.ToShortDateString() al @promo.FechaFin.ToShortDateString()</em>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No hay promociones disponibles en este momento.</p>
+        }
+    </div>
 </div>
 
 <script>
@@ -110,16 +125,16 @@
             type: 'GET',
             data: { origen: origen, destino: destino, fecha: fecha },
             success: function (rutas) {
-                let html = "<h2>Rutas Disponibles</h2><table><tr><th>Origen</th><th>Destino</th><th>Fecha</th><th>Disponibilidad</th></tr>";
+                let html = "<h2>Resultados de Búsqueda</h2><table class='results-table'><tr><th>Origen</th><th>Destino</th><th>Fecha</th><th>Disponibilidad</th></tr>";
                 if (rutas.length > 0) {
                     rutas.forEach(ruta => {
                         html += `<tr>
-                            <td>${ruta.origen}</td>
-                            <td>${ruta.destino}</td>
-                            <td>${ruta.fecha}</td>
-                            <td>${ruta.disponibilidad}</td>
-                            <td><a href="${ruta.seleccionarUrl}">Seleccionar</a></td>
-                        </tr>`;
+                                <td>${ruta.origen}</td>
+                                <td>${ruta.destino}</td>
+                                <td>${ruta.fecha}</td>
+                                <td class='${ruta.disponibilidad === 'Disponible' ? 'availability' : 'availability no'}'>${ruta.disponibilidad}</td>
+                                    <td><a href="${ruta.seleccionarUrl}" class="btn-seleccionar">Seleccionar</a></td>
+                            </tr>`;
                     });
                 } else {
                     html += "<tr><td colspan='4'>No hay rutas disponibles en este momento.</td></tr>";
